@@ -23,6 +23,7 @@ class pdoDAO implements IDAO {
 
     public function listar() {
         try {
+            $row = array();
 
             $conn = new PDO('mysql:host=' . self::MYSQL_HOST . ';dbname=' . self::MYSQL_DB_NAME, self::MYSQL_USER, self::MYSQL_PASSWORD);
 
@@ -30,10 +31,12 @@ class pdoDAO implements IDAO {
             $result = $conn->query("SELECT id_cliente, nome FROM cliente");
 
             if ($result) {
-                while ($row = $result->fetch(PDO::FETCH_OBJ)) {
+                while ($row[] = $result->fetch(PDO::FETCH_OBJ)) {
                     echo $row->id_cliente . " - " . $row->nome . "<br/>";
                 }
             }
+            
+            return $row;
         } catch (PDOException $exc) {
             echo "Erro ao listar: " . $exc->getMessage();
         } finally {
